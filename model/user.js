@@ -8,8 +8,8 @@ const userSchema = new Schema({
         email        :{type:String,unique:true,lowercase:true},
         userName     : String,
         password     : String,
-        polls        :  [{pollName:String,
-          items:[{item:String,votes:Number}]}]
+        polls        : [],
+        votedFor: []
 
 
 })

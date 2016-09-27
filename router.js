@@ -1,4 +1,9 @@
 const Authentication = require('./controllers/authentication');
+const CreatePoll = require('./controllers/create_poll_controller');
+const MyPolls = require('./controllers/my_polls_controller');
+const ShowPoll = require('./controllers/show_poll_controller');
+const AllPolls = require('./controllers/all_polls_controller');
+const Vote = require('./controllers/vote_controller');
 const passportService = require('./services/passport');//necessary for passport to work
 const passport = require('passport');
 
@@ -15,4 +20,9 @@ module.exports = function(app){
   })
   app.post('/signin', requireSignin,Authentication.signin);
   app.post('/signup',Authentication.signup)
+  app.post('/createpoll',CreatePoll);
+  app.get('/mypolls/:userID', MyPolls);
+  app.get('/viewpolls',AllPolls);
+  app.get('/showpoll/:pollID',ShowPoll);
+  app.put('/vote',Vote);
 }

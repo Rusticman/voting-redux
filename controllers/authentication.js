@@ -11,7 +11,7 @@ function tokenForUser(user){
 
 exports.signin = function(req,res,next){
   //user already authorised, now we give token
-  res.send({token:tokenForUser(req.user)});
+  res.send({token:tokenForUser(req.user),id:req.user._id});
 }
 
 exports.signup = function(req,res,next){
@@ -46,7 +46,7 @@ exports.signup = function(req,res,next){
     if(err){
       return next(err);
     }
-    res.json({token:tokenForUser(user)})
+    res.json({token:tokenForUser(user), id:user._id})
   })
 
   })

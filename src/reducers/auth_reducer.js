@@ -16,6 +16,7 @@ export default function(state = {},action){
 
     case AUTH_ERROR:
         return {...state, error:action.payload}
+
   }
  return state;
 }

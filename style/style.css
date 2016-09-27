@@ -1,3 +1,147 @@
-.error {
+@import 'https://fonts.googleapis.com/css?family=Josefin+Sans:400,600';
+
+/* App container*/
+
+* {
+margin: 0;
+}
+
+
+html,body {
+  height: 100%;
+  background: #19b5fe;
+  color:white;
+
+}
+
+.appContainer{
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 100%;
+  color:white;
+  background: #19b5fe;
+  height:100%;
+}
+
+/* End of App container*/
+
+/* Nav bar*/
+
+nav.header{
+  border-bottom: 2px solid white;
+}
+
+img.three_voters{
+  height:36px;
+  float:left;
+}
+
+.nav-item:not(:last-child) {
+    border-right:solid 1px white;  /* This will not give border to last li element */
+    padding-right:12px;
+}
+/*Nav bar end */
+
+/*homepage */
+
+.homepageWrapper{
+  text-align:center;
+}
+
+.homepageWrapper #vote_logo{
+  width:30%;
+  margin-top:20px;
+}
+
+.homepageWrapper #casting_ballot_img{
+  width:15%;
+  margin-top:30px;
+}
+
+.homepageWrapper .introText{
+  margin-top:30px;
+}
+
+.homepageWrapper .sign_up_but{
+  margin-top: 40px;
+  width:15%;
+  background: white;
+  color:#19b5fe;
+  font-size: 28px;
+  border-radius: 5px;
+}
+
+/*homepage end */
+
+
+
+
+
+/*show poll view */
+.ShowPollView{
+
+}
+canvas{
+  width:800px;
+  height:800px;
+}
+
+.chartWrapper{
+float:left;
+width:70%;
+}
+
+.voteFormWrapper{
+  clear:both;
+  text-align: center;
+
+}
+
+.voteForm{
+  padding-top: 20px;
+}
+
+.blackChartImg{
+  height:30px;
+  width:30px;
+  padding-bottom:5px;
+  margin-left:10px;
+}
+
+.pollTitle{
+  text-align: center;
+}
+/*show poll view end */
+
+
+/*standardised formatting across app */
+h1{
+  text-align:center;
+    font-size: 50px;
+}
+
+.error{
   color: red;
 }
+/* end of standardised formatting across app */
+
+/* Footer */
+
+.followMeWrapper{
+  float:right;
+  margin-right: 40px;
+}
+
+.followMe{
+  color:white
+}
+.wrapper {
+min-height: 100%;
+height: auto !important;
+height: 100%;
+margin: 0 auto -4em;
+}
+
+.footer, .push {
+height: 4em;
+}
+/*End of Footer */
