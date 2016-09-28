@@ -5,3 +5,4 @@ export const FETCH_MESSAGE = 'fetch_message';
 export const FETCH_MY_POLLS = 'fetch_my_polls';
 export const FETCHED_POLL = 'fetched_poll';
 export const ALL_POLLS = 'all_polls';
+export const CHART_DATA = 'chart_data';

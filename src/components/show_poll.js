@@ -7,80 +7,24 @@ import Vote from './vote';
 import Table from './table';
 
 class ShowPoll extends Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      chartData:{}
-    }
-  }
 
 
 componentWillMount(){
-this.props.fetchPoll(this.props.params.pollID);//sends pollID to fetchPoll action taken from param
-                                              //this finds in database and sends it back
+this.props.getChartData(this.props.params.pollID);//sends pollID to fetchPoll action taken from param
+this.props.fetchPoll(this.props.params.pollID); //this finds in database and sends it back
 }
 
-componentDidMount(){
-    this.setState({chartData:options})
-}
+
 
 componentWillUnmount(){
-
-  this.props.fetchPoll(null);
+this.props.fetchPoll(null);
 }
 
 
-chartRender(poll){
-  const objectItems = poll.items;
-  const arrayOfKeys = Object.keys(objectItems);
-  const arrayOfValues = [];
+chartRender(poll,chartData){
   const ctx = document.getElementById("myChart");
-  const options = {
-       type: 'doughnut',
-        data: {
-           labels: [],
-           datasets: [{
-               label: '# of Votes',
-               data: [],
-               backgroundColor: [],
-               borderColor: [],
-               borderWidth: 3
-           }]
-       },
-      options : {
-       responsive: true,
-       maintainAspectRatio: true
-   }
- };
-
-options.data.labels = arrayOfKeys;
-
-for( var key in objectItems){
-arrayOfValues.push(objectItems[key]);
-}
-
-options.data.datasets[0].data = arrayOfValues;
-
-const borderColor = arrayOfKeys.map((item) => {
-return 'rgb(0,0,0)';
-});
-options.data.datasets[0].borderColor = borderColor;
-
-const backgroundColor = arrayOfKeys.map((item) => {
-
-    const r = (Math.round(Math.random()* 127) + 127).toString(16);
-    const g = (Math.round(Math.random()* 127) + 127).toString(16);
-    const b = (Math.round(Math.random()* 127) + 127).toString(16);
-
-return '#' + r + g + b;
-});
-options.data.datasets[0].backgroundColor = backgroundColor;
-
-  const MyDoughnutChart = new Chart(ctx, options);
-
-
+  const MyDoughnutChart = new Chart(ctx, chartData);
   return MyDoughnutChart;
-
 
 }
 
@@ -109,13 +53,13 @@ formComponent(poll,auth){
 
 
 render(){
-  const {poll,authenticated} = this.props;
+  const {poll,authenticated,chartData} = this.props;
 
-  if(!poll){
+  if(!chartData || !poll){
   console.log('not yet....')
   }
   else{
-    this.chartRender(poll)
+   this.chartRender(poll, chartData)
   }
 
 
@@ -136,7 +80,7 @@ render(){
             </div>
           </div>
           <div className="rightPollContainer">
-            <Table chartData={this.state.chartData} />
+            <Table chartData={this.props.chartData} />
           </div>
         </div>
     </div>
@@ -147,10 +91,8 @@ render(){
 function mapStateToProps(state){
   return{
     poll:state.polls.fetchedPoll,
+    chartData:state.polls.chartData,
     authenticated: state.auth.authenticated
   }
 }
 export default connect(mapStateToProps,actions)(ShowPoll);
-
-bundle.js:2361 Warning: setState(...): Cannot update during an existing state transition (such as within `render`). Render methods should be a pure function of props and state.warning @ bundle.js:2361getInternalInstanceReadyForUpdate @ bundle.js:6082enqueueSetState @ bundle.js:6223ReactComponent.setState @ bundle.js:16089chartRender @ bundle.js:33087render @ bundle.js:33140_renderValidatedComponentWithoutOwnerOrContext @ bundle.js:7844_renderValidatedComponent @ bundle.js:7864ReactCompositeComponent__renderValidatedComponent @ bundle.js:1595_updateRenderedComponent @ bundle.js:7817_performComponentUpdate @ bundle.js:7801updateComponent @ bundle.js:7730ReactCompositeComponent_updateComponent @ bundle.js:1595performUpdateIfNecessary @ bundle.js:7678performUpdateIfNecessary @ bundle.js:5852runBatchedUpdates @ bundle.js:6434perform @ bundle.js:6894perform @ bundle.js:6894perform @ bundle.js:6391flushBatchedUpdates @ bundle.js:6452ReactUpdates_flushBatchedUpdates @ bundle.js:1595close @ bundle.js:6350closeAll @ bundle.js:6960perform @ bundle.js:6907perform @ bundle.js:6391flushBatchedUpdates @ bundle.js:6452ReactUpdates_flushBatchedUpdates @ bundle.js:1595close @ bundle.js:6350closeAll @ bundle.js:6960perform @ bundle.js:6907perform @ bundle.js:6391flushBatchedUpdates @ bundle.js:6452ReactUpdates_flushBatchedUpdates @ bundle.js:1595close @ bundle.js:6350closeAll @ bundle.js:6960perform @ bundle.js:6907perform @ bundle.js:6391flushBatchedUpdates @ bundle.js:6452ReactUpdates_flushBatchedUpdates @ bundle.js:1595close @ bundle.js:6350closeAll @ bundle.js:6960perform @ bundle.js:6907perform @ bundle.js:6391flushBatchedUpdates @ bundle.js:6452ReactUpdates_flushBatchedUpdates @ bundle.js:1595close @ bundle.js:6350closeAll @ bundle.js:6960perform @ bundle.js:6907perform @ bundle.js:6391flushBatchedUpdates @ bundle.js:6452ReactUpdates_flushBatchedUpdates @ bundle.js:1595close @ bundle.js:6350closeAll @ bundle.js:6960perform @ bundle.js:6907perform @ bundle.js:6391flushBatchedUpdates @ bundle.js:6452ReactUpdates_flushBatchedUpdates @ bundle.js:1595close @ bundle.js:6350closeAll @ bundle.js:6960perform @ bundle.js:6907perform @ bundle.js:6391flushBatchedUpdates @ bundle.js:6452ReactUpdates_flushBatchedUpdates @ bundle.js:1595closeAll @ bundle.js:6960perform @ bundle.js:6907batchedUpdates @ bundle.js:10931enqueueUpdate @ bundle.js:6481enqueueUpdate @ bundle.js:6066enqueueSetState @ bundle.js:6232ReactComponent.setState @ bundle.js:16089handleChange @ bundle.js:20308dispatch @ bundle.js:20692(anonymous function) @ bundle.js:27181dispatch @ bundle.js:21284(anonymous function) @ bundle.js:30913
-bundle.js:58418 stuff taken from state: undefined

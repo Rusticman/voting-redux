@@ -96,12 +96,12 @@ color:black;
 
 .leftPollContainer{
 float:left;
-width:50%;
+width:60%;
 }
 
 .rightPollContainer{
 float:right;
-width:50%;
+width:40%;
 align-items: stretch;
 flex: 1;
 }
@@ -122,8 +122,8 @@ canvas{
 }
 
 .chartImg{
-  height:30px;
-  width:30px;
+  height:50px;
+  width:50px;
   padding-bottom:5px;
   margin-left:10px;
 }
@@ -133,12 +133,32 @@ canvas{
 }
 
 .keyTable{
-  border:2px solid black;
-  min-height:70%;
+  border:4px solid black;
   min-width:30%;
   float:left;
   border-radius: 7px;
   margin-top:30px;
+  padding-top: 5px;
+  padding-bottom: 20px;
+}
+.keyTable> h3{
+  text-align: center;
+}
+
+.keyColour{
+  width:20px;
+  height:20px;
+  float:left;
+  margin-left:10px;
+}
+
+.keyItem{
+  margin-left: 10px;
+}
+
+.keyVotes{
+  float:right;
+  margin-right: 20px;
 }
 
 
@@ -166,8 +186,22 @@ h1{
 .followMeWrapper{
   float:right;
   margin:10px 40px 0px 0px;
-
 }
+/*
+.followMeWrapper > *{
+  border:1px solid red;
+}*/
+
+.followMeWrapper > h3{
+  margin:0;
+  padding:0;
+}
+.followMeWrapper > div {
+ margin:0;
+ padding:0;
+ vertical-align: top;
+}
+
 
 .followMe{
   color:white
@@ -176,14 +210,14 @@ h1{
   min-height: 100%;
   height: auto !important;
   /* equal to footer height */
-  margin-bottom: -120px;
+  margin-bottom: -90px;
 }
 .page-wrap:after {
   content: "";
   display: block;
 }
 .footer, .page-wrap:after {
-  height: 120px;
+  height: 90px;/*remember to change page-wrap margin bottom to same*/
 }
 .footer {
   background: #19b5fe;

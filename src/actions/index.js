@@ -7,7 +7,8 @@ import {
   FETCH_MESSAGE,
   FETCH_MY_POLLS,
   FETCHED_POLL,
-  ALL_POLLS
+  ALL_POLLS,
+  CHART_DATA
 } from './types';
 
 const ROOT_URL = 'http://localhost:3000';
@@ -186,4 +187,70 @@ setTimeout(function(){
 }
   }
 
+}
+
+
+export function getChartData(pollID){
+  return function(dispatch){
+  axios.get(`${ROOT_URL}/showpoll/${pollID}`)
+  .then(response => {
+    const poll = response.data.poll;
+    const objectItems = poll.items;
+    const arrayOfKeys = Object.keys(objectItems);
+    const arrayOfValues = [];
+
+    const options = {
+         type: 'doughnut',
+                   data: {
+             labels: [],
+             datasets: [{
+                 label: '# of Votes',
+                 data: [],
+                 backgroundColor: [],
+                 borderColor: [],
+                 borderWidth: 3
+             }]
+         },
+        options : {
+          legend: {
+            display: false
+         },
+         responsive: true,
+         maintainAspectRatio: true
+     }
+   };
+
+   options.data.labels = arrayOfKeys;
+
+   for( var key in objectItems){
+   arrayOfValues.push(objectItems[key]);
+   }
+
+   options.data.datasets[0].data = arrayOfValues;
+
+   const borderColor = arrayOfKeys.map((item) => {
+   return 'rgb(0,0,0)';
+   });
+   options.data.datasets[0].borderColor = borderColor;
+
+   const backgroundColor = arrayOfKeys.map((item) => {
+
+       const r = (Math.round(Math.random()* 127) + 127).toString(16);
+       const g = (Math.round(Math.random()* 127) + 127).toString(16);
+       const b = (Math.round(Math.random()* 127) + 127).toString(16);
+
+   return '#' + r + g + b;
+   });
+   options.data.datasets[0].backgroundColor = backgroundColor;
+
+console.log(options);
+    dispatch({
+      type:CHART_DATA,
+      payload:options
+    });
+  })
+  .catch(() =>{
+    console.log('chart data not retrieved')
+  })
+}
 }
