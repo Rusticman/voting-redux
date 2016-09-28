@@ -59,6 +59,13 @@ export function signupUser({ email, password, userName }) {
   }
 }
 
+export function changePage(){
+  return{
+    type:AUTH_ERROR,
+    payload:''
+  }
+}
+
 export function authError(error) {
   return {
     type: AUTH_ERROR,
@@ -106,6 +113,7 @@ return function(dispatch){
 axios.put(`${ROOT_URL}/vote`,{voteItem,pollID,userID})
      .then(response => {
        console.log('successfully submitted vote.');
+
      })
      .catch(() => {
        console.log('unsuccessfully submitted vote')
@@ -134,24 +142,48 @@ export function myPollsRetrieve(){
   }
 }
 
-export function fetchPoll(pollID){
+export function fetchPoll(pollID,delay){
   return function(dispatch){
-
-    axios.get(`${ROOT_URL}/showpoll/${pollID}`)
-    .then(response => {
-      dispatch({
-        type:FETCHED_POLL,
-        payload:response.data.poll
-      });
-    })
-    .catch(() =>{
-      dispatch({
-        type:FETCHED_POLL,
-        payload:null
-      });
-
-
+if(!delay){
+  axios.get(`${ROOT_URL}/showpoll/${pollID}`)
+  .then(response => {
+    dispatch({
+      type:FETCHED_POLL,
+      payload:response.data.poll
     });
+  })
+  .catch(() =>{
+    dispatch({
+      type:FETCHED_POLL,
+      payload:null
+    });
+
+
+  });
+
+}
+else{
+setTimeout(function(){
+  browserHistory.push('/viewpolls/'+pollID)
+  axios.get(`${ROOT_URL}/showpoll/${pollID}`)
+  .then(response => {
+    dispatch({
+      type:FETCHED_POLL,
+      payload:response.data.poll
+    });
+
+  })
+  .catch(() =>{
+    dispatch({
+      type:FETCHED_POLL,
+      payload:null
+    });
+
+
+  });
+}, 100);
+
+}
   }
 
 }

@@ -9,6 +9,10 @@ class Signin extends Component {
     this.props.signinUser({ email, password });
   }
 
+  componentWillUnmount(){
+    this.props.changePage()
+  }
+
 renderAlert(){
   if(this.props.errorMessage){
     return (

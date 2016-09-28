@@ -8,6 +8,10 @@ class Signup extends Component {
     this.props.signupUser(formProps);
   }
 
+  componentWillUnmount(){console.log('working?')
+    this.props.changePage()
+  }
+
   renderAlert() {
     if (this.props.errorMessage) {
       return (

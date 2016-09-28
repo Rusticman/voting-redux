@@ -6,7 +6,7 @@ const Footer = () =>{
 
     <div className="footer">
                <div className="followMeWrapper">
-                 <strong>follow me:</strong>
+                 <h2>follow me:</h2>
                 <div><a href="#" className="followMe">twitter</a></div>
                 <div><a href="#" className="followMe">linked in</a></div>
                 <div><a href="#" className="followMe">github</a></div>

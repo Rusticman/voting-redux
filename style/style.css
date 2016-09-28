@@ -4,10 +4,12 @@
 
 * {
 margin: 0;
+padding:0;
+border:0;
 }
 
 
-html,body {
+html,body,.appContainer,.appContainer1 {
   height: 100%;
   background: #19b5fe;
   color:white;
@@ -77,17 +79,36 @@ img.three_voters{
 
 
 /*show poll view */
-.ShowPollView{
-
-}
-canvas{
-  width:800px;
-  height:800px;
+.showPollView{
+background: white;
+color:black;
 }
 
-.chartWrapper{
+.showPollView h1{
+  color:black;
+  font-size:6vw;
+}
+
+.pollWrappedContainers{
+  overflow:auto;
+  display:flex;
+}
+
+.leftPollContainer{
 float:left;
-width:70%;
+width:50%;
+}
+
+.rightPollContainer{
+float:right;
+width:50%;
+align-items: stretch;
+flex: 1;
+}
+
+canvas{
+  width:500px;
+  height:500px;
 }
 
 .voteFormWrapper{
@@ -100,7 +121,7 @@ width:70%;
   padding-top: 20px;
 }
 
-.blackChartImg{
+.chartImg{
   height:30px;
   width:30px;
   padding-bottom:5px;
@@ -110,13 +131,29 @@ width:70%;
 .pollTitle{
   text-align: center;
 }
+
+.keyTable{
+  border:2px solid black;
+  min-height:70%;
+  min-width:30%;
+  float:left;
+  border-radius: 7px;
+  margin-top:30px;
+}
+
+
 /*show poll view end */
+
+/*my polls view */
+
+
+/*my polls view end */
 
 
 /*standardised formatting across app */
 h1{
   text-align:center;
-    font-size: 50px;
+  font-size: 50px;
 }
 
 .error{
@@ -128,20 +165,28 @@ h1{
 
 .followMeWrapper{
   float:right;
-  margin-right: 40px;
+  margin:10px 40px 0px 0px;
+
 }
 
 .followMe{
   color:white
 }
-.wrapper {
-min-height: 100%;
-height: auto !important;
-height: 100%;
-margin: 0 auto -4em;
+.page-wrap {
+  min-height: 100%;
+  height: auto !important;
+  /* equal to footer height */
+  margin-bottom: -120px;
+}
+.page-wrap:after {
+  content: "";
+  display: block;
+}
+.footer, .page-wrap:after {
+  height: 120px;
+}
+.footer {
+  background: #19b5fe;
 }
 
-.footer, .push {
-height: 4em;
-}
 /*End of Footer */

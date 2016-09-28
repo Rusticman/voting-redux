@@ -24,7 +24,7 @@ renderPolls(){
 
 render(){
     return(
-      <div>
+      <div className="myPollWrapper">
         <h1>my polls</h1>
       <ul className="list-group">
         {this.renderPolls()}

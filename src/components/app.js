@@ -5,10 +5,11 @@ import Footer from './footer';
 export default class App extends Component {
   render() {
     return (
-      <div>
-          <div className="wrapper">
+      <div className="appContainer1">
+          <div className="page-wrap">
           <Header />
           {this.props.children}
+        
           </div>
           <Footer />
       </div>

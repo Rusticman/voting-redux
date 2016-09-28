@@ -4,17 +4,22 @@ import * as actions from '../actions';
 
 
 class Vote extends Component{
+  static contextTypes = {
+    router: React.PropTypes.object
+  }
 
   handleVoteSubmit({voteItem}){
     const pollID = this.props.pollID;
     if(voteItem){
-      this.props.voteSubmit({voteItem,pollID})
-       
+      this.context.router.push('/loader');
+       this.props.voteSubmit({voteItem,pollID});
+       this.props.fetchPoll(pollID,true)
     }
     else{
       const voteItem =  document.getElementById('voteSelect').value;
-       this.props.voteSubmit({voteItem,pollID});
-    setTimeout(function(){ this.props.fetchPoll(pollID);  }, 3000);
+        this.context.router.push('/loader');
+      this.props.voteSubmit({voteItem,pollID});
+      this.props.fetchPoll(pollID,true);
     }
 
   }
