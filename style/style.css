@@ -100,6 +100,7 @@ width:60%;
 }
 
 .rightPollContainer{
+  position:relative;
 float:right;
 width:40%;
 align-items: stretch;
@@ -109,16 +110,7 @@ flex: 1;
 canvas{
   width:500px;
   height:500px;
-}
-
-.voteFormWrapper{
-  clear:both;
-  text-align: center;
-
-}
-
-.voteForm{
-  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .chartImg{
@@ -130,6 +122,35 @@ canvas{
 
 .pollTitle{
   text-align: center;
+}
+
+.voteFormWrapper{
+  border:4px solid black;
+  width:45%;
+  float:right;
+  margin:2% 30% 2% 0;
+  border-radius: 7px;
+  clear:both;
+  text-align: center;
+}
+
+.voteForm{
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+#voteSelect{
+  border:1px solid #19b5fe;
+  width:60%;
+}
+
+option[default] {
+   display: none;
+}
+
+.submitButton{
+  background:#19b5fe!important;
+
 }
 
 .keyTable{
@@ -159,8 +180,39 @@ canvas{
 .keyVotes{
   float:right;
   margin-right: 20px;
+  margin-left: 10px;
 }
 
+.newItemWrapper{
+  border:4px solid black;
+  width:70%;
+  margin:2% 50% 2% 0;
+  border-radius: 7px;
+  float:left;
+  text-align: center;
+
+}
+.newItemInput{
+  border:1px solid #19b5fe;
+
+
+}
+input[type="text"]{
+  border: 1px solid #19b5fe;
+    width:60%;
+}
+
+.flashWrapper{
+  overflow: auto;
+  position: absolute;
+  bottom:2%;
+}
+
+.messageSuggestion{
+  float:left;
+  width:70%;
+
+}
 
 /*show poll view end */
 
@@ -221,6 +273,7 @@ h1{
 }
 .footer {
   background: #19b5fe;
+  border-top: 2px solid white;
 }
 
 /*End of Footer */

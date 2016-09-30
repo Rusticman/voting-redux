@@ -2,10 +2,21 @@ import {
   FETCH_MY_POLLS,
   FETCHED_POLL,
   ALL_POLLS,
-  CHART_DATA
+  CHART_DATA,
+  HAS_VOTED,
+  ITEM_CREATED,
+  POLL_ERROR
 } from '../actions/types';
 
-const INITIAL_STATE = {myPolls:[],fetchedPoll:null,allPolls:null,chartData:{}};
+const INITIAL_STATE = {
+                      myPolls:[],
+                      fetchedPoll:null,
+                      allPolls:null,
+                      chartData:{},
+                      hasVoted:true,
+                      itemCreated:false,
+                      pollError:''
+                    };
 
 export default function(state =INITIAL_STATE,action){
   switch(action.type){
@@ -20,6 +31,15 @@ export default function(state =INITIAL_STATE,action){
 
     case CHART_DATA:
         return {...state, chartData:action.payload}
+
+    case HAS_VOTED:
+        return {...state, hasVoted:action.payload}
+
+    case ITEM_CREATED:
+        return {...state, itemCreated:action.payload}
+
+    case POLL_ERROR:
+        return {...state, pollError:action.payload}
   }
  return state;
 }

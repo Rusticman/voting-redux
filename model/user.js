@@ -9,7 +9,8 @@ const userSchema = new Schema({
         userName     : String,
         password     : String,
         polls        : [],
-        votedFor: []
+        votedFor: [],
+        itemCreated: []
 
 
 })

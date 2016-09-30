@@ -9,7 +9,14 @@ class Vote extends Component{
   }
 
   handleVoteSubmit({voteItem}){
-    const pollID = this.props.pollID;
+
+  this.props.userVoted()
+
+    const {pollID,hasVoted} = this.props;
+
+    if(hasVoted){
+      return;
+    }
     if(voteItem){
       this.context.router.push('/loader');
        this.props.voteSubmit({voteItem,pollID});
@@ -39,12 +46,17 @@ class Vote extends Component{
 
     const { handleSubmit, fields: {  voteItem }} = this.props;
 return(
-    <form className="voteForm" onSubmit={handleSubmit(this.handleVoteSubmit.bind(this))}>
-    <select {...voteItem} id="voteSelect" name="voteSelection">
-    {this.formOptions(this.props.poll)}
-    </select>
-    <button action="submit" className="btn btn-primary">submit</button>
-    </form>
+  <div className="voteFormWrapper">
+   <div className="voteformWrapper">
+      <form className="voteForm" onSubmit={handleSubmit(this.handleVoteSubmit.bind(this))}>
+        <select {...voteItem}  id="voteSelect" name="voteSelection">
+        <option value="" default >select your option to vote...</option>
+        {this.formOptions(this.props.poll)}
+        </select>
+        <button action="submit" className="submitButton btn btn-primary">submit</button>
+      </form>
+    </div>
+  </div>
   )
   }
 

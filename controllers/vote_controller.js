@@ -13,7 +13,7 @@ User.findById(userID, function(err,user){//update user's voteFor array so can on
     return next(err);
   }
 if(user.votedFor.indexOf(pollID) !== -1){
-  return res.send({error: "User has already voted in this poll."})
+  return res.send({message: "User has already voted in this poll."})
 }
 else{
   user.votedFor.push(pollID);

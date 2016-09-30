@@ -20,7 +20,6 @@ chartData.data.datasets[0].backgroundColor.map(function(colour,i){
 
 chartData.data.labels.map(function(item,i){
   dataArray[i].item = item;
-  console.log(dataArray[i].item)
   })
 
 const key = dataArray.map(function(keyItem,i){

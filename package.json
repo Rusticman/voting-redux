@@ -1,7 +1,7 @@
 {
   "name": "redux-simple-starter",
   "version": "1.0.0",
-  "description": "Simple starter package for Redux with React and Babel support",
+  "description": "Voting app",
   "main": "index.js",
   "repository": "git@github.com/Rusticman/voting-redux.git",
   "scripts": {
@@ -10,7 +10,7 @@
     "test:watch": "npm run test -- --watch",
     "dev": "nodemon index.js"
   },
-  "author": "",
+  "author": "Rusticman",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.2.1",

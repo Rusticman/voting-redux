@@ -8,7 +8,10 @@ import {
   FETCH_MY_POLLS,
   FETCHED_POLL,
   ALL_POLLS,
-  CHART_DATA
+  CHART_DATA,
+  HAS_VOTED,
+  ITEM_CREATED,
+  POLL_ERROR
 } from './types';
 
 const ROOT_URL = 'http://localhost:3000';
@@ -114,7 +117,7 @@ return function(dispatch){
 axios.put(`${ROOT_URL}/vote`,{voteItem,pollID,userID})
      .then(response => {
        console.log('successfully submitted vote.');
-
+       console.log(response.data.message)
      })
      .catch(() => {
        console.log('unsuccessfully submitted vote')
@@ -208,7 +211,7 @@ export function getChartData(pollID){
                  data: [],
                  backgroundColor: [],
                  borderColor: [],
-                 borderWidth: 3
+                 borderWidth: 4
              }]
          },
         options : {
@@ -243,7 +246,7 @@ export function getChartData(pollID){
    });
    options.data.datasets[0].backgroundColor = backgroundColor;
 
-console.log(options);
+
     dispatch({
       type:CHART_DATA,
       payload:options
@@ -253,4 +256,65 @@ console.log(options);
     console.log('chart data not retrieved')
   })
 }
+}
+
+export function hasVotedInPoll(pollID){
+return function(dispatch){
+  const id = localStorage.getItem('id');
+
+  axios.get(`${ROOT_URL}/hasvoted/${pollID}/${id}`)
+  .then(response => {
+    console.log(response.data.message)
+    if(response.data.message === true){
+      dispatch({
+        type:HAS_VOTED,
+        payload:true
+      })
+    }
+    else{
+      dispatch({
+        type:HAS_VOTED,
+        payload:false
+      })
+    }
+
+  })
+}
+}
+
+export function newItemCreate({pollID,newItem,newState}){
+return function(dispatch){
+  const userID = localStorage.getItem('id');
+//console.log('pollID:',pollID,'userID:',userID,'newItem:',newItem);
+  axios.post(`${ROOT_URL}/newitem`,{pollID, newItem, userID})
+  .then(response => {
+      if(response.data.message === 'success'){
+
+        dispatch({
+          type:ITEM_CREATED,
+          payload:newState
+        })
+      }
+      else{
+        dispatch({
+          type:POLL_ERROR,
+          payload:'You have already created an item for this poll'
+        })
+      }
+
+  })
+  .catch(() => {
+    console.log('it failed to create new item')
+  })
+}
+
+}
+
+
+export function clearPollError(){
+
+  return{
+    type:POLL_ERROR,
+    payload:''
+  }
 }
