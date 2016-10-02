@@ -25,8 +25,8 @@ export function signinUser({ email, password }) {
         // - Update state to indicate user is authenticated
         dispatch({ type: AUTH_USER });
         // - Save the JWT token
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('id',response.data.id);
+        sessionStorage.setItem('token', response.data.token);
+        sessionStorage.setItem('id',response.data.id);
         // - redirect to the route '/feature'
         browserHistory.push('/viewpolls');
       })
@@ -41,8 +41,8 @@ export function signinUser({ email, password }) {
 }
 
 export function signoutUser() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('id');
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('id');
 console.log('signed out!')
   return { type: UNAUTH_USER };
 }
@@ -52,8 +52,8 @@ export function signupUser({ email, password, userName }) {
     axios.post(`${ROOT_URL}/signup`, { email, password, userName })
       .then(response => {
         dispatch({ type: AUTH_USER });
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('id',response.data.id);
+        sessionStorage.setItem('token', response.data.token);
+        sessionStorage.setItem('id',response.data.id);
         browserHistory.push('/viewpolls');
       })
       .catch(error => {
@@ -78,8 +78,9 @@ export function authError(error) {
 }
 
 export function pollSubmit({pollTitle,items}){
-const id = localStorage.getItem('id');
-  axios.post(`${ROOT_URL}/createpoll`, { pollTitle, items,id})
+const id = sessionStorage.getItem('id');
+  axios.post(`${ROOT_URL}/createpoll`, { pollTitle, items,id},{
+      headers: { authorization: sessionStorage.getItem('token') }})
     .then(response => {
 
       browserHistory.push('/mypolls');
@@ -93,7 +94,9 @@ const id = localStorage.getItem('id');
 export function viewAllPolls(){
   return function(dispatch){
 
-      axios.get(`${ROOT_URL}/viewpolls`)
+      axios.get(`${ROOT_URL}/viewpolls`,{
+          headers: { authorization: sessionStorage.getItem('token') }
+        })
       .then(response => {
         dispatch({
           type:ALL_POLLS,
@@ -110,11 +113,13 @@ export function viewAllPolls(){
 }
 
 export function voteSubmit({voteItem,pollID}){
-const userID = localStorage.getItem('id');
+const userID = sessionStorage.getItem('id');
 
 return function(dispatch){
 
-axios.put(`${ROOT_URL}/vote`,{voteItem,pollID,userID})
+axios.put(`${ROOT_URL}/vote`,{voteItem,pollID,userID},{
+    headers: { authorization: sessionStorage.getItem('token') }
+  })
      .then(response => {
        console.log('successfully submitted vote.');
        console.log(response.data.message)
@@ -130,9 +135,11 @@ axios.put(`${ROOT_URL}/vote`,{voteItem,pollID,userID})
 export function myPollsRetrieve(){
   return function(dispatch){
 
-    const id = localStorage.getItem('id');
+    const id = sessionStorage.getItem('id');
 
-    axios.get(`${ROOT_URL}/mypolls/${id}`)
+    axios.get(`${ROOT_URL}/mypolls/${id}`,{
+        headers: { authorization: sessionStorage.getItem('token') }
+      })
     .then(response => {
       dispatch({
         type:FETCH_MY_POLLS,
@@ -149,7 +156,9 @@ export function myPollsRetrieve(){
 export function fetchPoll(pollID,delay){
   return function(dispatch){
 if(!delay){
-  axios.get(`${ROOT_URL}/showpoll/${pollID}`)
+  axios.get(`${ROOT_URL}/showpoll/${pollID}`, {
+      headers: { authorization: sessionStorage.getItem('token') }
+    })
   .then(response => {
     dispatch({
       type:FETCHED_POLL,
@@ -169,7 +178,8 @@ if(!delay){
 else{
 setTimeout(function(){
   browserHistory.push('/viewpolls/'+pollID)
-  axios.get(`${ROOT_URL}/showpoll/${pollID}`)
+  axios.get(`${ROOT_URL}/showpoll/${pollID}`,{
+      headers: { authorization: sessionStorage.getItem('token') }})
   .then(response => {
     dispatch({
       type:FETCHED_POLL,
@@ -195,7 +205,8 @@ setTimeout(function(){
 
 export function getChartData(pollID){
   return function(dispatch){
-  axios.get(`${ROOT_URL}/showpoll/${pollID}`)
+  axios.get(`${ROOT_URL}/showpoll/${pollID}`,{
+      headers: { authorization: sessionStorage.getItem('token') }})
   .then(response => {
     const poll = response.data.poll;
     const objectItems = poll.items;
@@ -260,9 +271,11 @@ export function getChartData(pollID){
 
 export function hasVotedInPoll(pollID){
 return function(dispatch){
-  const id = localStorage.getItem('id');
+  const id = sessionStorage.getItem('id');
 
-  axios.get(`${ROOT_URL}/hasvoted/${pollID}/${id}`)
+  axios.get(`${ROOT_URL}/hasvoted/${pollID}/${id}`,{
+      headers: { authorization: sessionStorage.getItem('token') }
+    })
   .then(response => {
     console.log(response.data.message)
     if(response.data.message === true){
@@ -284,9 +297,11 @@ return function(dispatch){
 
 export function newItemCreate({pollID,newItem,newState}){
 return function(dispatch){
-  const userID = localStorage.getItem('id');
-//console.log('pollID:',pollID,'userID:',userID,'newItem:',newItem);
-  axios.post(`${ROOT_URL}/newitem`,{pollID, newItem, userID})
+  const userID = sessionStorage.getItem('id');
+
+  axios.post(`${ROOT_URL}/newitem`,{pollID, newItem, userID},{
+      headers: { authorization: sessionStorage.getItem('token') }
+    })
   .then(response => {
       if(response.data.message === 'success'){
 

@@ -10,11 +10,20 @@ const userSchema = new Schema({
         password     : String,
         polls        : [],
         votedFor: [],
-        itemCreated: []
-
-
-})
-
+        itemCreated: [],
+        facebook : {
+            "id"           : String,
+            "token"        : String,
+            "email"        : String,
+            "name"         : String
+                  },
+          twitter : {
+              "id"           : String,
+              "token"        : String,
+              "email"        : String,
+              "name"         : String
+                   }
+});
 //encrypt password before adding user to database
 userSchema.pre('save',function(next){
 
@@ -45,9 +54,18 @@ userSchema.methods.comparePasswords = function(candidatePassword,callback){
     if(err){
       return callback(err);
     }
+    console.log('database hashed password',this.password)
+    if(!isMatch){
+      console.log('password didnt match')
+    }
+    else{
+      console.log('password matched')
+    }
     callback(null,isMatch);
   })
 }
+
+
 
 const ModelClass = mongoose.model('user',userSchema);
 

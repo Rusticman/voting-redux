@@ -34,6 +34,12 @@ renderLinks(navStyle){
       </li>,
       <li className="nav-item" key={2}>
         <Link style={navStyle} className="nav-link" to="/signup">sign up</Link>
+      </li>,
+      <li className="nav-item" key={6}>
+        <Link style={navStyle} className="nav-link" href='auth/facebook'>facebook sign up</Link>
+      </li>,
+      <li className="nav-item" key={7}>
+        <Link style={navStyle} className="nav-link" href='/logout'>log out</Link>
       </li>
     ];
   }

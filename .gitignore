@@ -6,3 +6,4 @@ npm-debug.log
 *.iml
 /.idea
 config.js
+.env

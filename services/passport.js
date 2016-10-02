@@ -4,6 +4,11 @@ const User = require('../model/user');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
+const FacebookStrategy = require('passport-facebook').Strategy;
+const configAuth = require('../config.js');
+
+
+///////////////////////LOCAL STRATEGY\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 //setup for local Strategy
 const localOptions = {usernameField:"email"};//local strategy uses username and password by default
@@ -34,6 +39,8 @@ User.findOne({email:email}, function(err,user){
 
 })
 
+//////////////////////////JWT STRATEGY\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 //setup options for JWT Strategy
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),//this tells strategy to find token in authorization header
@@ -46,7 +53,7 @@ const jwtLogin = new JwtStrategy(jwtOptions,function(payload,done){
   //if it does call 'done'with that user
   //otherwise, call done without a user object
 
-  User.findById(payload.sub, function(err,user){//sub property given in authenication.js
+  User.findById(payload.sub, function(err,user){//sub property given in authentication.js
     if(err){
       return done(err,false);
     }
@@ -60,6 +67,78 @@ const jwtLogin = new JwtStrategy(jwtOptions,function(payload,done){
   })
 })
 
+///////////////////////////FACEBOOK STRATEGY\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+const facebookStrategy = new FacebookStrategy({
+
+        clientID        : configAuth.facebookAuth.clientID,
+        clientSecret    : configAuth.facebookAuth.clientSecret,
+        callbackURL     : configAuth.facebookAuth.callbackURL,
+        profileFields: ['id', 'email', 'name', 'verified'],
+        passReqToCallback : true
+    },
+    function(req,token,refreshToken,profile,done){
+      console.log('hey im the profile:',profile)
+        process.nextTick(function(){
+
+
+            User.findOne({"facebook.id":facebook.id},function(err,user){
+
+                if(err){
+                    console.log('error retreiving user')
+
+                }
+                else if(user){
+                    return done(null, user);
+                }
+                else{
+
+                    const facebookObject = {
+                        "id"           : profile.id,
+                        "token"        : token,
+                        "email"        : profile.emails[0].value,
+                        "name"         : profile.name.givenName + ' ' + profile.name.familyName
+    };
+
+
+                const User = new User({
+                  "userName":profile.name.givenName,
+                  "email":profile.emails[0].value,
+                  "facebook":facebookObject
+                });
+
+
+                    User.save(function(err){
+                      if(err){
+                        console.log('there was an error saving user')
+                        throw err;
+                      }
+                    })
+
+                    User.findOne({"facebook.id":profile.id},function(err,user){
+
+                        if(err){
+                            console.log('cannot find newly inserted facebook object');
+                            throw err;
+                        }else{
+                            return done(null,user);
+                        }
+                    })
+                }
+            })
+        })
+
+    }
+
+
+    )
+
+
+
+
+
+
 //tell passport to use these strategies
-passport.use(jwtLogin)
-passport.use(localLogin)
+passport.use(jwtLogin);
+passport.use(localLogin);
+passport.use(facebookStrategy);
