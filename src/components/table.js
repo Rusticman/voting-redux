@@ -24,7 +24,7 @@ chartData.data.labels.map(function(item,i){
 
 const key = dataArray.map(function(keyItem,i){
 
- return <div key={keyItem.item+i} className="keyItem">
+ return <div className="keyTableWrapper" key={keyItem.item+i} className="keyItem">
             <div style={{background:keyItem.colour}} className="keyColour"></div>
               <span className="keyItem">{keyItem.item}</span>
               <div className="keyVotes">{keyItem.votes}</div>

@@ -7,7 +7,6 @@ module.exports = function(req,res,next){
   const id = req.body.id;
 
 
-
 const poll = new Poll({
   pollTitle:pollTitle,
   items:{}

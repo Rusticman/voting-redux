@@ -73,16 +73,14 @@ const facebookStrategy = new FacebookStrategy({
 
         clientID        : configAuth.facebookAuth.clientID,
         clientSecret    : configAuth.facebookAuth.clientSecret,
-        callbackURL     : configAuth.facebookAuth.callbackURL,
-        profileFields: ['id', 'email', 'name', 'verified'],
-        passReqToCallback : true
+        callbackURL     : configAuth.facebookAuth.callbackURL
     },
-    function(req,token,refreshToken,profile,done){
+    function(token,refreshToken,profile,done){
       console.log('hey im the profile:',profile)
         process.nextTick(function(){
 
 
-            User.findOne({"facebook.id":facebook.id},function(err,user){
+            User.findOne({"facebook.id":profile.id},function(err,user){
 
                 if(err){
                     console.log('error retreiving user')
@@ -94,11 +92,8 @@ const facebookStrategy = new FacebookStrategy({
                 else{
 
                     const facebookObject = {
-                        "id"           : profile.id,
-                        "token"        : token,
-                        "email"        : profile.emails[0].value,
-                        "name"         : profile.name.givenName + ' ' + profile.name.familyName
-    };
+                        "id"           : profile.id//this is used to find the user in future sign ins
+                        };
 
 
                 const User = new User({

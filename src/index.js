@@ -19,6 +19,7 @@ import Loader from './components/loader';
 import reducers from './reducers';
 import { AUTH_USER } from './actions/types';
 
+
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
@@ -28,6 +29,7 @@ if (token) {
   // we need to update application state
   store.dispatch({ type: AUTH_USER });
 }
+
 
 ReactDOM.render(
   <Provider store={store}>

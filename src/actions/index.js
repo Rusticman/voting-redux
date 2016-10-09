@@ -63,6 +63,23 @@ export function signupUser({ email, password, userName }) {
   }
 }
 
+
+export function authSignin(userID,name,provider){
+  return function(dispatch){console.log('am i working authsignin')
+    axios.post(`${ROOT_URL}/auth/signin`,{userID,name,provider})
+    .then(response => {
+      dispatch({type:AUTH_USER})
+      sessionStorage.setItem('token', response.data.token);
+      sessionStorage.setItem('id',response.data.id);
+      browserHistory.push('/viewpolls');
+    })
+    .catch(error => {
+      console.log('Not signed up!')
+      dispatch(authError(error.response.data.error));
+    });
+}
+}
+
 export function changePage(){
   return{
     type:AUTH_ERROR,
@@ -79,11 +96,11 @@ export function authError(error) {
 
 export function pollSubmit({pollTitle,items}){
 const id = sessionStorage.getItem('id');
-  axios.post(`${ROOT_URL}/createpoll`, { pollTitle, items,id},{
+  axios.post(`${ROOT_URL}/createpoll`, {pollTitle, items, id},{
       headers: { authorization: sessionStorage.getItem('token') }})
     .then(response => {
 
-      browserHistory.push('/mypolls');
+      setTimeout(() => browserHistory.push('/mypolls'),100);
     })
     .catch(() => {
       console.log('did not register new poll');
@@ -247,8 +264,15 @@ export function getChartData(pollID){
    });
    options.data.datasets[0].borderColor = borderColor;
 
-   const backgroundColor = arrayOfKeys.map((item) => {
+const arrayOfColours = ["#CF000F","#2ecc71","#FF7416","#44BBFF"
+                      ,"#FFDE49","#6F2480","#CEBEFF","#799412","#112885",
+                    "#C0392B","#F3EECC","#523D1E","#FAA5AD","#AE44C8",
+                  "#6DA0CD","#FE0089","#7F8C8D"]
 
+   const backgroundColor = arrayOfKeys.map((item,i) => {
+     if(i < 17){
+       return arrayOfColours[i];
+     }
        const r = (Math.round(Math.random()* 127) + 127).toString(16);
        const g = (Math.round(Math.random()* 127) + 127).toString(16);
        const b = (Math.round(Math.random()* 127) + 127).toString(16);
@@ -277,7 +301,7 @@ return function(dispatch){
       headers: { authorization: sessionStorage.getItem('token') }
     })
   .then(response => {
-    console.log(response.data.message)
+    console.log('this is the message:',response.data.message)
     if(response.data.message === true){
       dispatch({
         type:HAS_VOTED,
@@ -291,6 +315,9 @@ return function(dispatch){
       })
     }
 
+  })
+  .catch(()=> {
+    console.log('didnt work hasVotedInPoll')
   })
 }
 }

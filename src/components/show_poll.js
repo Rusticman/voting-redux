@@ -19,7 +19,10 @@ constructor(props){
 componentWillMount(){
 this.props.getChartData(this.props.params.pollID);//sends pollID to fetchPoll action taken from param
 this.props.fetchPoll(this.props.params.pollID); //this finds in database and sends it back
-this.props.hasVotedInPoll(this.props.params.pollID);
+if(sessionStorage.getItem('token')){
+  this.props.hasVotedInPoll(this.props.params.pollID);
+}
+
 }
 
 

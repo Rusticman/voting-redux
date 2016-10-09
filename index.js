@@ -12,7 +12,8 @@ const cors = require('cors');
 mongoose.connect('mongodb://localhost:auth/votingdb');
 
 app.use(morgan('combined'));
-app.use(cors());
+app.use(cors({origin: 'http://localhost:8080'}));
+//app.options('*', cors())
 app.use(bodyParser.json({type: "*/*" }));
 
 router(app);

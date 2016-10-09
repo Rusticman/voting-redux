@@ -13,17 +13,24 @@ class CreatePoll extends Component{
   render(){
       const { handleSubmit, fields: { pollTitle, items }} = this.props;
     return(
+      <div className="createPollContainer">
+        <h1>create poll<img className="chartImg" src="../../style/img/note.png" alt="note image" /></h1>
+      <div className="createPollWrapper">
+
       <form onSubmit={handleSubmit(this.handlePollSubmit.bind(this))}>
-        <fieldset className="form-group">
+        <fieldset className="form-group formPollTitle">
           <label>poll title:</label>
-          <input {...pollTitle} className="form-control" />
+          <input {...pollTitle} className="form-control titleInput" placeholder="name of poll..." />
+
         </fieldset>
-        <fieldset className="form-group">
+        <fieldset className="form-group formPollItems">
           <label>options:</label>
-          <input {...items} type="text" className="form-control" />
+          <textarea {...items} type="text" rows="6" className="form-control itemstextArea" placeholder="separate items using a comma..." />
         </fieldset>
-        <button action="submit" className="btn btn-primary">submit</button>
+        <button action="submit" className="pollCreateButton">submit</button>
       </form>
+      </div>
+      </div>
     )
   }
 }

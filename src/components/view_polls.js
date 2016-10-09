@@ -14,9 +14,9 @@ const pollArray = this.props.allPolls.map((userPolls) => {
 
   return userPolls.polls.map((poll) => {
     return(
-      <li className="list-group-item" key={poll._id.toString()}>
-        <Link to={"viewpolls/"+poll._id.toString()}>
-          <span className="text-center"><strong>{poll.pollTitle}</strong></span>
+      <li className="viewPollItems" key={poll._id.toString()}>
+        <Link style={{"color":"white"}} to={"viewpolls/"+poll._id.toString()}>
+          <span className="text-center"><strong>{poll.pollTitle}</strong></span><img src="../../style/img/magnifying_glass.png"/>
         </Link>
       </li>
     )
@@ -32,9 +32,9 @@ const {allPolls} = this.props;
   }
   else{
     return(
-      <div>
-      <h1>view polls</h1>
-      <ul className="list-group">
+      <div style={{"overflow":"hidden"}}>
+      <h1>view polls<img className="chartImg imgHeight" src="../../style/img/blue_chart.png" alt="chart image" /></h1>
+      <ul className="viewPollContainer">
       {this.renderPolls()}
       </ul>
       </div>
