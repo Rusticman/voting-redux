@@ -8,4 +8,6 @@ export const ALL_POLLS = 'all_polls';
 export const CHART_DATA = 'chart_data';
 export const HAS_VOTED = 'has_voted';
 export const ITEM_CREATED = 'item_created';
-export const POLL_ERROR = 'poll_error';
+export const MESSAGE_USER = 'message_user';
+export const UPDATE_CHART = 'update_chart';
+export const DELETE_POLL = 'delete_poll';

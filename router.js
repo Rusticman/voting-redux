@@ -7,6 +7,7 @@ const Vote = require('./controllers/vote_controller');
 const HasVoted = require('./controllers/has_voted_controller');
 const AddNewItem = require('./controllers/new_item_controller');
 const Auth0Signin = require('./controllers/auth_0_signin');
+const DeletePoll = require('./controllers/delete_poll_controller');
 
 const passportService = require('./services/passport');//necessary for passport to work
 const passport = require('passport');
@@ -30,6 +31,7 @@ module.exports = function(app){
   app.get('/hasvoted/:pollID/:userID',HasVoted);
   app.post('/newitem',requireAuth,AddNewItem);
   app.post('/auth/signin',Auth0Signin);
+  app.delete('/delete/:pollID', requireAuth, DeletePoll);
 
 
 

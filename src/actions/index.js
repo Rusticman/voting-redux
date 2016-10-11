@@ -11,7 +11,9 @@ import {
   CHART_DATA,
   HAS_VOTED,
   ITEM_CREATED,
-  POLL_ERROR
+  MESSAGE_USER,
+  UPDATE_CHART,
+  DELETE_POLL
 } from './types';
 
 const ROOT_URL = 'http://localhost:3000';
@@ -129,17 +131,20 @@ export function viewAllPolls(){
 
 }
 
-export function voteSubmit({voteItem,pollID}){
+export function voteSubmit({selectedItem,pollID}){
 const userID = sessionStorage.getItem('id');
 
 return function(dispatch){
 
-axios.put(`${ROOT_URL}/vote`,{voteItem,pollID,userID},{
+axios.put(`${ROOT_URL}/vote`,{selectedItem,pollID,userID},{
     headers: { authorization: sessionStorage.getItem('token') }
   })
      .then(response => {
        console.log('successfully submitted vote.');
-       console.log(response.data.message)
+       dispatch({
+         type:HAS_VOTED,
+         payload:true
+       })
      })
      .catch(() => {
        console.log('unsuccessfully submitted vote')
@@ -157,7 +162,7 @@ export function myPollsRetrieve(){
     axios.get(`${ROOT_URL}/mypolls/${id}`,{
         headers: { authorization: sessionStorage.getItem('token') }
       })
-    .then(response => {
+    .then(response => {console.log('retrieved my polls')
       dispatch({
         type:FETCH_MY_POLLS,
         payload:response.data.polls
@@ -170,9 +175,8 @@ export function myPollsRetrieve(){
   }
 }
 
-export function fetchPoll(pollID,delay){
+export function fetchPoll(pollID){
   return function(dispatch){
-if(!delay){
   axios.get(`${ROOT_URL}/showpoll/${pollID}`, {
       headers: { authorization: sessionStorage.getItem('token') }
     })
@@ -188,37 +192,19 @@ if(!delay){
       payload:null
     });
 
-
   });
-
-}
-else{
-setTimeout(function(){
-  browserHistory.push('/viewpolls/'+pollID)
-  axios.get(`${ROOT_URL}/showpoll/${pollID}`,{
-      headers: { authorization: sessionStorage.getItem('token') }})
-  .then(response => {
-    dispatch({
-      type:FETCHED_POLL,
-      payload:response.data.poll
-    });
-
-  })
-  .catch(() =>{
-    dispatch({
-      type:FETCHED_POLL,
-      payload:null
-    });
-
-
-  });
-}, 100);
-
-}
   }
-
 }
 
+export function updateChart(boolean){
+  return function(dispatch){
+
+    dispatch({
+      type:UPDATE_CHART,
+      payload:boolean
+    })
+  }
+}
 
 export function getChartData(pollID){
   return function(dispatch){
@@ -280,7 +266,7 @@ const arrayOfColours = ["#CF000F","#2ecc71","#FF7416","#44BBFF"
    return '#' + r + g + b;
    });
    options.data.datasets[0].backgroundColor = backgroundColor;
-
+console.log('new data:',options.data.datasets[0].data);
 
     dispatch({
       type:CHART_DATA,
@@ -301,7 +287,7 @@ return function(dispatch){
       headers: { authorization: sessionStorage.getItem('token') }
     })
   .then(response => {
-    console.log('this is the message:',response.data.message)
+
     if(response.data.message === true){
       dispatch({
         type:HAS_VOTED,
@@ -331,17 +317,22 @@ return function(dispatch){
     })
   .then(response => {
       if(response.data.message === 'success'){
-
-        dispatch({
-          type:ITEM_CREATED,
-          payload:newState
-        })
+        setTimeout(() => {
+          dispatch({
+            type:ITEM_CREATED,
+            payload:newState
+          })
+        },2000)
       }
       else{
         dispatch({
-          type:POLL_ERROR,
-          payload:'You have already created an item for this poll'
+          type:MESSAGE_USER,
+          payload:'You have already created an item for this poll.'
         })
+        setTimeout(() => dispatch({
+          type:MESSAGE_USER,
+          payload:''
+        }),3000)
       }
 
   })
@@ -352,11 +343,18 @@ return function(dispatch){
 
 }
 
+export function messageDisplay(message){
+return function(dispatch){
 
-export function clearPollError(){
+  dispatch({
+    type:MESSAGE_USER,
+    payload:message
+  })
 
-  return{
-    type:POLL_ERROR,
+  setTimeout(() => dispatch({
+    type:MESSAGE_USER,
     payload:''
-  }
+  }),3000)
+}
+
 }

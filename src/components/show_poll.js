@@ -9,12 +9,7 @@ import NewItemForm from './new_item_form';
 import Messages from './messages';
 
 class ShowPoll extends Component{
-constructor(props){
-  super(props);
-  this.state = {
-    hasVoteMessage:false
-  }
-}
+
 
 componentWillMount(){
 this.props.getChartData(this.props.params.pollID);//sends pollID to fetchPoll action taken from param
@@ -25,8 +20,6 @@ if(sessionStorage.getItem('token')){
 
 }
 
-
-
 componentWillUnmount(){
 this.props.fetchPoll(null);
 }
@@ -34,12 +27,8 @@ this.props.fetchPoll(null);
 componentWillUpdate(nextProps){
  if(nextProps.itemCreated !== this.props.itemCreated){//this should re-render component when new item
   this.props.getChartData(this.props.params.pollID);
- }
+}
 
- if(nextProps.pollError){
-     const component = this;
-   setTimeout(function(){ component.props.clearPollError() },3000)
- }
 }
 
 chartRender(poll,chartData){
@@ -68,17 +57,14 @@ formComponent(poll,auth){
     return ;
   }
   else{
-    return   <Vote poll={poll} pollID={this.props.params.pollID}
-              userVoted={this.userVoted.bind(this)}
-              hasVoted={this.props.hasVoted}/>
+    return   <Vote poll={poll}
+                   pollID={this.props.params.pollID}
+                   hasVoted={this.props.hasVoted}
+                   messageForUser={this.props.messageForUser}
+                   updateChart={this.props.updateChart}
+                   chartData={this.props.chartData}
+                   />
   }
-}
-
-
-userVoted(){
-  this.setState({hasVoteMessage:true})
-  const component = this;
-  setTimeout(function(){component.setState({hasVoteMessage:false})},3000);
 }
 
 
@@ -86,13 +72,25 @@ render(){
   const {poll,authenticated,chartData,itemCreated} = this.props;
 
   if(!chartData || !poll){
-  console.log('not yet....')
   }
   else{
-   this.chartRender(poll, chartData)
+
+    const hasNoData = this.props.chartData.data.datasets[0].data.every((elem) =>{ return elem === 0});
+
+var  chartOpacity,chartTag;
+
+if(hasNoData){
+   chartOpacity = 'noOpacity'
+  chartTag = 'Please vote in this poll.'
+ }
+else{
+  chartTag = '';
+chartOpacity = '';
+}
+
+  this.chartRender(poll, chartData);
+
   }
-
-
 
   return(
     <div className="showPollView">
@@ -100,24 +98,25 @@ render(){
       <div className="pollTitle">{this.pollInfo(poll)}</div>
         <div className="pollWrappedContainers">
           <div className="leftPollContainer">
-            <div className="chartWrapper">
-              <canvas id="myChart">
-              </canvas>
-
+            <div className="chartWrapper">{chartTag}
+               <canvas className={chartOpacity} id="myChart">
+               </canvas>
             </div>
-
               {this.formComponent(poll,authenticated)}
-
           </div>
           <div className="rightPollContainer">
-            <Table chartData={this.props.chartData} />
+            <Table chartData={this.props.chartData}
+
+                          />
             <NewItemForm pollID={this.props.params.pollID}
-                        auth={this.props.authenticated}/>
+                        auth={this.props.authenticated}
+                        chartRender={this.props.chartRender}
+                        />
             <div className="flashWrapper">
-            <Messages hasVoteMessage={this.state.hasVoteMessage}
-                      hasVoted={this.props.hasVoted}
-                      pollError={this.props.pollError}
-                      auth={this.props.authenticated} />
+            <Messages hasVoted={this.props.hasVoted}
+                      auth={this.props.authenticated}
+                      messageForUser={this.props.messageForUser}
+                      />
 
             </div>
           </div>
@@ -134,7 +133,8 @@ function mapStateToProps(state){
     authenticated: state.auth.authenticated,
     hasVoted:state.polls.hasVoted,
     itemCreated:state.polls.itemCreated,
-    pollError:state.polls.pollError
+    messageForUser: state.polls.messageForUser,
+    isChartUpdated:state.polls.isChartUpdated
   }
 }
 export default connect(mapStateToProps,actions)(ShowPoll);

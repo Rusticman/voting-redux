@@ -17,7 +17,7 @@ class App extends Component {
   componentWillMount(){
 
   const newURL = window.location.protocol + "/" + window.location.host  + window.location.pathname;
-   console.log(newURL)
+
     const options = {
   allowedConnections: ['twitter', 'facebook'],
   auth: {

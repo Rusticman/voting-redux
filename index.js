@@ -7,13 +7,15 @@ const router = require('./router');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const config = require('./config');
 
-//DB set up
-mongoose.connect('mongodb://localhost:auth/votingdb');
+
+//DB set up 'mongodb://localhost:auth/votingdb'
+mongoose.connect(config.mongodb_url);
 
 app.use(morgan('combined'));
-app.use(cors({origin: 'http://localhost:8080'}));
-//app.options('*', cors())
+app.use(cors());
+
 app.use(bodyParser.json({type: "*/*" }));
 
 router(app);

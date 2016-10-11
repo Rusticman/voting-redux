@@ -8,7 +8,6 @@ handleItemSubmit({newItem}){
 const newState = this.props.itemCreated ? false :true;//this is to help re render if new item created
 const pollID = this.props.pollID;
 this.props.newItemCreate({pollID,newItem ,newState});
-
 }
 
 
@@ -22,25 +21,19 @@ if(!auth){
 
   return(
     <div className="newItemWrapper">
-    <form className="voteForm" onSubmit={handleSubmit(this.handleItemSubmit.bind(this))}>
+      <form className="voteForm" onSubmit={handleSubmit(this.handleItemSubmit.bind(this))}>
 
-    <input type="text" {...newItem} className="newItemInput" placeholder="type new poll item here..." />
+      <input type="text" {...newItem} className="newItemInput" placeholder="type new poll item here..." />
 
-    <button action="submit" className="submitButton btn btn-primary">submit</button>
-    </form>
+      <button action="submit" className="submitButton btn btn-primary">submit</button>
+      </form>
 
     </div>
   )
 }
 }
 
-function mapStateToProps(state){
-  return{
-    pollError:state.polls.pollError
-  }
-}
-
 export default reduxForm(
   {form:'addnewitem',
    fields:['newItem']
-},mapStateToProps,actions) (NewItemForm);
+},null,actions)(NewItemForm);

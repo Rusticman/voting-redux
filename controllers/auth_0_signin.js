@@ -31,8 +31,7 @@ User.findOne({"userName":name},function(err,existingUser){
   //if cannot with provided id, use user name
   if(err){
     return next(err);
-  }console.log('is there exisitng user:',existingUser)
-
+  }
 if(existingUser){
   //if find with username, save the new id in user and send back token
   existingUser[provider].id = userID;

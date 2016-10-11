@@ -4,30 +4,20 @@ import * as actions from '../actions';
 
 
 class Vote extends Component{
-  static contextTypes = {
-    router: React.PropTypes.object
-  }
 
-  handleVoteSubmit({voteItem}){
 
-  this.props.userVoted()
+handleVoteSubmit({voteItem}){
+const {pollID,hasVoted,poll,chartData,isChartUpdated} = this.props;
+if(hasVoted){
+  return this.props.messageDisplay('You have already voted in this poll.')
+}
 
-    const {pollID,hasVoted} = this.props;
+const selectedItem = voteItem || document.getElementById('voteSelect').value;
+this.props.voteSubmit({selectedItem,pollID});
+    setTimeout(() => {
+      this.props.getChartData(pollID)
+    },1500)
 
-    if(hasVoted){
-      return;
-    }
-    if(voteItem){
-      this.context.router.push('/loader');
-       this.props.voteSubmit({voteItem,pollID});
-       this.props.fetchPoll(pollID,true)
-    }
-    else{
-      const voteItem =  document.getElementById('voteSelect').value;
-        this.context.router.push('/loader');
-      this.props.voteSubmit({voteItem,pollID});
-      this.props.fetchPoll(pollID,true);
-    }
 
   }
 
@@ -45,9 +35,10 @@ class Vote extends Component{
   render(){
 
     const { handleSubmit, fields: {  voteItem }} = this.props;
+
 return(
   <div className="voteFormWrapper">
-   <div className="voteformWrapper">
+
       <form className="voteForm" onSubmit={handleSubmit(this.handleVoteSubmit.bind(this))}>
         <select {...voteItem}  id="voteSelect" name="voteSelection">
         <option value="" default >select your option to vote...</option>
@@ -55,7 +46,7 @@ return(
         </select>
         <button action="submit" className="submitButton btn btn-primary">submit</button>
       </form>
-    </div>
+
   </div>
   )
   }

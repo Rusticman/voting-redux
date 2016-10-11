@@ -5,7 +5,8 @@ import {
   CHART_DATA,
   HAS_VOTED,
   ITEM_CREATED,
-  POLL_ERROR
+  MESSAGE_USER,
+  UPDATE_CHART
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -15,7 +16,8 @@ const INITIAL_STATE = {
                       chartData:{},
                       hasVoted:true,
                       itemCreated:false,
-                      pollError:''
+                      'messageForUser':'',
+                      isChartUpdated:false
                     };
 
 export default function(state =INITIAL_STATE,action){
@@ -38,8 +40,12 @@ export default function(state =INITIAL_STATE,action){
     case ITEM_CREATED:
         return {...state, itemCreated:action.payload}
 
-    case POLL_ERROR:
-        return {...state, pollError:action.payload}
+    case MESSAGE_USER:
+        return {...state, messageForUser:action.payload}
+
+    case UPDATE_CHART:
+        return {...state, isChartUpdated:action.payload}
+
   }
  return state;
 }

@@ -1,7 +1,7 @@
 const User = require('../model/user');
 
 module.exports = function(req,res,next){
-  const pollID = req.params.pollID;console.log('this is the request:',req)
+  const pollID = req.params.pollID;
 
   User.find({},{"polls":1,"_id":0},function(err,polls){
 if(err){

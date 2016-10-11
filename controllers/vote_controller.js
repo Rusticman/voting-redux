@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 module.exports = function(req,res,next){
   const pollID = req.body.pollID;
   const userID = req.body.userID;
-  const pollItem = req.body.voteItem;
+  const pollItem = req.body.selectedItem;
 
 
 
@@ -27,7 +27,7 @@ User.findOne({"polls._id":id},function(err,someonesPoll){//find the poll's user.
     return next(err)
   }
 const somePoll =mongoose.Types.ObjectId(someonesPoll._id);
-console.log('the user id:',somePoll,'the poll id:',id,'the item to find:',findItem,'the item to increment:',updateVote);
+
 User.update({"_id":somePoll,"polls._id" :id, [findItem]:{$exists:true}}, {$inc:{[updateVote]:1}},function(err,documents){
   if(err){//update the poll by incrementing it by one
     console.log('failed to update vote');

@@ -1,7 +1,8 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Messages = (props) => {
-    const {hasVoted,hasVoteMessage,pollError,auth} = props;
+    const {hasVoted,hasVoteMessage,pollError,auth,messageForUser} = props;
 
 if(!auth){
   return (
@@ -10,28 +11,14 @@ if(!auth){
   )
 }
 
-if(hasVoteMessage){
-
-  if(hasVoted){
-    return(
-      <div className="alert alert-danger">
-   You have already voted in this poll.
-     </div>
-    )
+if(!messageForUser){
+return <div></div>
 }
-
+if(messageForUser){
+    return <div className="alert alert-danger">{messageForUser}</div>
 }
 
 
-
-if(pollError){
-return(
-
-  <div className="alert alert-danger">
-You have already created an item for this poll.
-</div>
-)
-}
 return <div></div>
 }
 
